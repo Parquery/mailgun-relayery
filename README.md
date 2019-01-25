@@ -36,7 +36,8 @@ Usage
 
 Compilation
 -----------
-TODO: add links to pre-compiled binaries.
+If you're running a linux x64 architecture, you can directly use the binaries available in 
+the [Releases](https://github.com/Parquery/mailgun-relayery/releases) page.
 
 *  Run the [release script](https://github.com/Parquery/mailgun-relayery/release.py) to compile and release the two 
 server binaries to a target directory:
@@ -44,14 +45,11 @@ server binaries to a target directory:
     ```bash
     ./release.py --release_dir your/release/directory
     ```
-*  Run<sup>1</sup> the database initialization binary to create an 
-   empty channel database in a target directory:
+*  Run the database initialization binary to create an empty channel database in a target directory:
   
     ```bash
-    ./bin/mailgun-relayery-init -database_dir your/database/directory
+    ./your/release/directory/mailgun-relayery-init -database_dir /your/database/directory
     ```
-<sup>1</sup><sub><sup>: warning: the provided binary is compiled for linux x64. For different architectures, please 
-release the Go code in mailgun-relayery-init/.</sup></sub>
 
 Running the servers
 -------------------
@@ -95,7 +93,7 @@ Sending requests
      
 Development
 ===========
-Please refer to [CONTRIBUTING.md](https://github.com/Parquery/mailgun-relayery/CONTRIBUTING.md).
+Please refer to [CONTRIBUTING.md](https://github.com/Parquery/mailgun-relayery/blob/master/CONTRIBUTING.md).
 
 Versioning
 ==========
