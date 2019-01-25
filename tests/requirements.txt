@@ -1,4 +1,4 @@
-requests==2.19.1
+requests==2.20.0
 lmdb==0.94
 temppathlib==1.0.3
 icontract==2.0.1
