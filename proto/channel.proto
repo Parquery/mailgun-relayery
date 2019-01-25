@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+// defines messages to represent the messaging channel.
+package protoed.channel;
+
+// represents a messaging channel.
+message Channel {
+    string descriptor = 1;  // gives the identifier and descriptor of the channel
+    string token = 2;  // gives the HTTP authentication token.
+    Entity sender = 3; // gives the sender of the email.
+    repeated Entity recipients = 4; // gives the recipients of the email.
+    repeated Entity cc = 5; // gives the entries of the CC (carbon copy) field of the email.
+    repeated Entity bcc = 6; // gives the entries of the BCC (blind carbon copy) field of the email.
+    string domain = 7; // indicates the MailGun domain for the email.
+    float min_period = 8; // gives the minimum push period frequency for a channel, in seconds.
+    int32 max_size = 9; // gives the maximum allowed size of the request, in bytes.
+};
+
+// represents a sender or recipient of an email.
+message Entity {
+  string email = 1;  // gives the email address of the entity.
+  string name = 2;  // gives the name of the entity. Can be empty.
+};

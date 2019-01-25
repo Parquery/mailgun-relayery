@@ -1,0 +1,55 @@
+matrix:
+  include:
+    - language: go
+
+      # Golang version matrix
+      go: 1.11
+
+      before_install:
+        # Install code coverage / coveralls tooling
+        - go get -u github.com/axw/gocov/gocov
+        - go get -u github.com/mattn/goveralls
+        - go get -u golang.org/x/tools/cmd/cover
+
+        # Merge all subpackage code coverage reports into a single report
+        - go get -u github.com/modocache/gover
+
+        # Install golint to lint the code
+        - go get -u golang.org/x/lint/golint
+
+        # Install errcheck to check that all errors have been handled
+        - go get -u github.com/kisielk/errcheck
+
+        # Install cyclomatic dependency analysis tool
+        - go get -u github.com/fzipp/gocyclo
+
+        # Install gocontracts
+        - go get -u github.com/Parquery/gocontracts
+
+        # Install vendors
+        - go get -u github.com/golang/dep/cmd/dep
+        - dep ensure
+
+      before_script:
+        # Print build info.
+        - echo $TRAVIS_COMMIT
+        - echo $TRAVIS_TAG
+        - echo $TRAVIS_BRANCH
+        - echo $TRAVIS_BUILD_NUMBER
+        - echo $TRAVIS_REPO_SLUG
+
+      script:
+        - python3 precommit.py
+
+      after_success:
+        # Merge all coverage reports located in subdirectories and put them under: gover.coverprofile
+        - gover
+        # Send code coverage report to coveralls.io
+        - goveralls -service=travis-ci -coverprofile=gover.coverprofile
+
+    - language: python
+      python: 3.5
+      install:
+        - pip3 install -r ./tests/requirements.txt
+      script:
+        - ./tests/precommit.py

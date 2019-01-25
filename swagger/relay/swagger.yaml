@@ -1,0 +1,92 @@
+swagger: '2.0'
+info:
+  title: Relay Server API
+  description: |
+    relays messages coming from multiple message channels to a single Mailgun email channel.
+
+    The clients need to authenticate by basic auth specifying the channel descriptor as the
+    user name and the assigned API token as the password.
+  version: "1.0.0"
+schemes:
+  - https
+basePath: /
+tags:
+- name: "relay"
+paths:
+  /api/message:
+    post:
+      operationId: put_message
+      tags:
+        - relay
+      description: |
+        sends a message to the server, which relays it to the MailGun API.
+
+        The given (descriptor, token) pair are authenticated first.
+        The message's metadata is determined by the channel information from the database.
+      parameters:
+        - name: X-Descriptor
+          in: header
+          type: string
+          required: true
+        - name: X-Token
+          in: header
+          type: string
+          required: true
+        - name: message
+          in: formData
+          schema:
+            $ref: "#/definitions/Message"
+          required: true
+      consumes:
+        - application/json
+      responses:
+        200:
+          description: signals that the message was correctly relayed to MailGun.
+        403:
+          description: signals that the request token is invalid.
+        404:
+          description: signals that the descriptor is unknown.
+        413:
+          description: |
+            signals that according to the channel, the request size exceeds the maximum allowed
+            for the descriptor.
+        429:
+          description: |
+            signals that according to the channel, the minimum waiting period between requests
+            for the descriptor did not elapse.
+        default:
+          description: contains an unexpected error.
+
+definitions:
+  Token:
+    description: is a string authenticating the sender of an HTTP request.
+    type: string
+    example: RBbPYhmPXurT8nM5TAJpPOcHMaFkJblA62mr6MCvpF4oVa6cy
+
+  Descriptor:
+    description: identifies a channel.
+    type: string
+    example: client-1/pipeline-3
+
+  Message:
+    description: represents a message to be relayed.
+    type: object
+    properties:
+      subject:
+        description: contains the text to be used as the email's subject.
+        type: string
+        example: "broken pipeline observed"
+      content:
+        description: contains the text to be used as the email's content.
+        type: string
+        example: "A broken pipeline was observed the 10/12/2018 at 14:37. Please contact the system operator."
+      html:
+        description: |
+          contains the optional html text to be used as the email's content.
+
+          If set, the "content" field of the Message is ignored.
+        type: string
+        example: "A <b>broken</b> pipeline was observed the 10/12/2018 at 14:37. Please contact the system operator."
+    required:
+      - subject
+      - content

@@ -10,3 +10,13 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+# Other
+.idea
+mailgun-relayery/*.coverprofile
+*.coverprofile
+mailgun-relayery/testcases/*.coverprofile
+vendor
+__pycache__
+tests/__pycache__
+.mypy_cache

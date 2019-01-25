@@ -1,0 +1,181 @@
+swagger: '2.0'
+info:
+  title: Control API
+  description: |
+    API for managing the channels.
+  version: "1.0.0"
+schemes:
+  - https
+basePath: /
+tags:
+- name: "control"
+paths:
+  /api/channel:
+    put:
+      operationId: put_channel
+      tags:
+        - control
+      description: |
+        Updates the channel uniquely identified by a descriptor.
+
+        If there is already a channel associated with the descriptor, the old channel is overwritten with the new one.
+
+        In order to enforce the min_period between messages, the Relay server keeps track of the time of the most
+        recently relayed message for each descriptor. If a channel is overwritten, the time of relay of the most
+        recent message is erased unless the new channel has the same min_period field as the old one.
+      parameters:
+        - name: channel
+          in: body
+          schema:
+            $ref: "#/definitions/Channel"
+          required: true
+      consumes:
+        - application/json
+      responses:
+        200:
+          description: signals that the channel update was accepted.
+        default:
+          description: contains an unexpected error.
+    delete:
+      operationId: delete_channel
+      tags:
+        - control
+      description: |
+        removes the channel associated with the descriptor.
+      parameters:
+        - name: descriptor
+          in: body
+          schema:
+            $ref: "#/definitions/Descriptor"
+          required: true
+      consumes:
+        - application/json
+      responses:
+        200:
+          description: |
+            signals that the channel was correctly erased, or that the channel was not found.
+        default:
+          description: contains an unexpected error.
+
+  /api/list_channels:
+    get:
+      operationId: list_channels
+      tags:
+        - control
+      description: lists the available channels information.
+      parameters:
+        - name: page
+          in: query
+          description: specifies the index of a page. The default is 1 (first page).
+          type: integer
+          format: int32
+        - name: per_page
+          in: query
+          description: specifies a desired number of items per page. The default is 100.
+          type: integer
+          format: int32
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: serves the channel information list.
+          schema:
+            $ref: "#/definitions/ChannelsPage"
+        default:
+          description: contains an unexpected error.
+
+definitions:
+  Token:
+    description: is a string authenticating the sender of an HTTP request.
+    type: string
+    example: RBbPYhmPXurT8nM5TAJpPOcHMaFkJblA62mr6MCvpF4oVa6cy
+
+  Descriptor:
+    description: identifies a channel.
+    type: string
+    example: client-1/pipeline-3
+
+  Entity:
+    description: contains the email address and optionally the name of an entity.
+    type: object
+    properties:
+      email:
+        type: string
+        example: name@domain.com
+      name:
+        type: string
+        example: John Doe
+    required:
+      - email
+
+  Channel:
+    description: defines the messaging channel.
+    type: object
+    properties:
+      descriptor:
+        $ref: "#/definitions/Descriptor"
+      token:
+        $ref: "#/definitions/Token"
+      sender:
+        $ref: "#/definitions/Entity"
+      recipients:
+        type: array
+        items:
+          $ref: "#/definitions/Entity"
+      cc:
+        type: array
+        items:
+          $ref: "#/definitions/Entity"
+      bcc:
+        type: array
+        items:
+          $ref: "#/definitions/Entity"
+      domain:
+        description: indicates the MailGun domain for the channel.
+        type: string
+        example: marketing.domainname.com
+      min_period:
+        description: is the minimum push period frequency for a channel, in seconds.
+        type: number
+        format: float
+      max_size:
+        description: indicates the maximum allowed size of the request, in bytes.
+        type: integer
+        format: int32
+    required:
+      - descriptor
+      - token
+      - sender
+      - recipients
+      - domain
+      - min_period
+      - max_size
+
+  ChannelsPage:
+    description: lists channels in a paginated manner.
+    type: object
+    properties:
+      page:
+        description: specifies the index of the page.
+        type: integer
+        format: int32
+      page_count:
+        description: specifies the number of pages available.
+        type: integer
+        format: int32
+      per_page:
+        description: specifies the number of items per page.
+        type: integer
+        format: int32
+      channels:
+        description: contains the channel data.
+        type: array
+        items:
+          $ref: "#/definitions/Channel"
+    required:
+      - page
+      - page_count
+      - per_page
+      - channels

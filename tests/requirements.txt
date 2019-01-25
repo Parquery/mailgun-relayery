@@ -1,0 +1,14 @@
+requests==2.19.1
+lmdb==0.94
+temppathlib==1.0.3
+icontract==2.0.1
+logthis==1.0.1
+
+# static code formatters and checkers
+pydocstyle==2.1.1
+yapf==0.18.0
+pylint==1.8.2
+mypy==0.641
+
+# code generators
+swagger_to==3.0.1
