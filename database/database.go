@@ -497,7 +497,7 @@ func (t *Txn) pageRange(page uint,
 // * !dbc.InTest || err != nil || t.mustGetCh(channel.Descriptor_) != nil
 // * !dbc.InTest || err != nil || oldHas || t.mustCountCh() == oldCount+1
 // * !dbc.InTest || err != nil || !oldHas || t.mustCountCh() == oldCount
-// * if min_period changed, timestamp is erased: !dbc.InTest || err != nil || t.mustGetCh(channel.Descriptor_) == nil || t.mustGetCh(channel.Descriptor_).MinPeriod == channel.MinPeriod || t.mustGetTs(channel.Descriptor_) == nil
+// * !dbc.InTest || err != nil || t.mustGetCh(channel.Descriptor_) == nil || t.mustGetCh(channel.Descriptor_).MinPeriod == channel.MinPeriod || t.mustGetTs(channel.Descriptor_) == nil
 func (t *Txn) PutChannel(channel *protoed.Channel) (err error) {
 	// Pre-conditions
 	switch {
@@ -528,7 +528,7 @@ func (t *Txn) PutChannel(channel *protoed.Channel) (err error) {
 		case !(!dbc.InTest || err != nil || !oldHas || t.mustCountCh() == oldCount):
 			panic("Violated: !dbc.InTest || err != nil || !oldHas || t.mustCountCh() == oldCount")
 		case !(!dbc.InTest || err != nil || t.mustGetCh(channel.Descriptor_) == nil || t.mustGetCh(channel.Descriptor_).MinPeriod == channel.MinPeriod || t.mustGetTs(channel.Descriptor_) == nil):
-			panic("Violated: if min_period changed, timestamp is erased: !dbc.InTest || err != nil || t.mustGetCh(channel.Descriptor_) == nil || t.mustGetCh(channel.Descriptor_).MinPeriod == channel.MinPeriod || t.mustGetTs(channel.Descriptor_) == nil")
+			panic("Violated: !dbc.InTest || err != nil || t.mustGetCh(channel.Descriptor_) == nil || t.mustGetCh(channel.Descriptor_).MinPeriod == channel.MinPeriod || t.mustGetTs(channel.Descriptor_) == nil")
 		default:
 			// Pass
 		}

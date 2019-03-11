@@ -19,5 +19,5 @@ type Message struct {
 	// contains the optional html text to be used as the email's content.
 	//
 	// If set, the "content" field of the Message is ignored.
-	Html *string `json:"html,omitempty"`
+	HTML *string `json:"html,omitempty"`
 }

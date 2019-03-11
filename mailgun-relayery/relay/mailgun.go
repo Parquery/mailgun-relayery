@@ -65,8 +65,8 @@ func relayMessage(message *Message,
 		email.AddBCC(entityToMailgunEmail(bcc))
 	}
 
-	if message.Html != nil {
-		email.SetHtml("<html>" + *message.Html + "</html>")
+	if message.HTML != nil {
+		email.SetHtml("<html>" + *message.HTML + "</html>")
 	}
 
 	human, msgID, err := mg.Send(email)
