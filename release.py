@@ -56,8 +56,7 @@ def main() -> int:
     mailgun_relayery_pth = go_bin_dir / "mailgun-relayery"
 
     # Get mailgun-relayery version
-    version = subprocess.check_output(
-        [mailgun_relayery_pth.as_posix(), "-version"], universal_newlines=True).strip()
+    version = subprocess.check_output([mailgun_relayery_pth.as_posix(), "-version"], universal_newlines=True).strip()
 
     filenames = ['mailgun-relayery', 'mailgun-relayery-init', 'mailgun-relay-controlery']
 
