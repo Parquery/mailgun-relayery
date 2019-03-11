@@ -19,6 +19,13 @@ go get github.com/Parquery/mailgun-relayery
 cd $GOPATH/src/github.com/Parquery/mailgun-relayery
 ```
 
+* We use [dep](https://github.com/golang/dep) to manage the dependencies.
+To install all the dependencies, call:
+
+```bash
+dep ensure
+```
+
 * If you want to build everything in the project:
 
 ```bash
@@ -58,17 +65,19 @@ We will not go through all precommit tools as they can be found in the
 #### Go
 The following external dependencies are used in the Go code:
 
-- [gorilla-mux]("https://github.com/gorilla/mux") for routing and handling HTTP requests;
-- [go-jsonschema]("https://github.com/xeipuuv/gojsonschema") for proof-checking JSON data;
-- [lmdb-go]("https://github.com/bmatsuo/lmdb-go") for the channel and timestamp database;
-- [protobuf-go]("https://github.com/golang/protobuf") for encoding the database entries;
-- [gocontracts]("https://github.com/Parquery/gocontracts") for design-by-contract in Go.
+- [dep](https://github.com/golang/dep) for managing the dependencies;
+- [gorilla-mux](https://github.com/gorilla/mux) for routing and handling HTTP requests;
+- [go-jsonschema](https://github.com/xeipuuv/gojsonschema) for proof-checking JSON data;
+- [lmdb-go](https://github.com/bmatsuo/lmdb-go) for the channel and timestamp database;
+- [protobuf-go](https://github.com/golang/protobuf) for encoding the database entries;
+- [gocontracts](https://github.com/Parquery/gocontracts) for design-by-contract in Go.
 
 #### Python
 The following tools are used for code generation:
-- [swagger-to]("https://github.com/Parquery/swagger-to") for converting Swagger files to Go server and Py client code;
-- [icontract]("https://github.com/Parquery/icontract") for design-by-contract in Python.
-- [protoc-gen-go]("https://github.com/golang/protobuf/tree/master/protoc-gen-go") for converting .proto files to Go 
+
+- [swagger-to](https://github.com/Parquery/swagger-to) for converting Swagger files to Go server and Py client code;
+- [icontract](https://github.com/Parquery/icontract) for design-by-contract in Python.
+- [protoc-gen-go](https://github.com/golang/protobuf/tree/master/protoc-gen-go) for converting .proto files to Go 
 code.
 
 ## Code of Conduct
