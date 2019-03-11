@@ -44,22 +44,37 @@ def main() -> int:
 
     # set the working directory to the script's directory
     script_dir = pathlib.Path(os.path.dirname(os.path.realpath(__file__)))
+
+    ##
+    # Install
+    ##
+
+    print("go install -i ./... to GOPATH {} ...".format(env['GOPATH']))
     subprocess.check_call(['go', 'install', '-i', './...'], env=env, cwd=script_dir.as_posix())
 
     go_bin_dir = release_dir / "bin"
-    bin_path = go_bin_dir / "mailgun-relayery"
+    mailgun_relayery_pth = go_bin_dir / "mailgun-relayery"
 
     # Get mailgun-relayery version
-    version = subprocess.check_output([bin_path.as_posix(), "-version"], universal_newlines=True).strip()
+    version = subprocess.check_output(
+        [mailgun_relayery_pth.as_posix(), "-version"], universal_newlines=True).strip()
 
+    filenames = ['mailgun-relayery', 'mailgun-relayery-init', 'mailgun-relay-controlery']
+
+    ##
     # Release the binary package
+    ##
+
+    print("Releasing the binary package to {} ...".format(release_dir))
     with tempfile.TemporaryDirectory() as tmp_dir:
         bin_package_dir = pathlib.Path(tmp_dir) / "mailgun-relayery-{}-linux-x64".format(version)
 
-        target = bin_package_dir / "bin/mailgun-relayery"
-        target.parent.mkdir(parents=True)
+        (bin_package_dir / "bin").mkdir(parents=True)
 
-        shutil.copy(bin_path.as_posix(), target.as_posix())
+        for filename in filenames:
+            source_pth = go_bin_dir / filename
+            target_pth = bin_package_dir / "bin" / filename
+            shutil.copy(source_pth.as_posix(), target_pth.as_posix())
 
         tar_path = bin_package_dir.parent / "mailgun-relayery-{}-linux-x64.tar.gz".format(version)
 
@@ -69,13 +84,20 @@ def main() -> int:
 
         shutil.move(tar_path.as_posix(), (release_dir / tar_path.name).as_posix())
 
+    ##
     # Release the debian package
+    ##
+
+    print("Releasing the debian package to {} ...".format(release_dir))
     with tempfile.TemporaryDirectory() as tmp_dir:
         deb_package_dir = pathlib.Path(tmp_dir) / "mailgun-relayery_{}_amd64".format(version)
 
-        target = deb_package_dir / "usr/bin/mailgun-relayery"
-        target.parent.mkdir(parents=True)
-        shutil.copy(bin_path.as_posix(), target.as_posix())
+        (deb_package_dir / "usr/bin").mkdir(parents=True)
+        for filename in filenames:
+            source_pth = go_bin_dir / filename
+            target_pth = deb_package_dir / "usr/bin" / filename
+
+            shutil.copy(source_pth.as_posix(), target_pth.as_posix())
 
         control_pth = deb_package_dir / "DEBIAN/control"
         control_pth.parent.mkdir(parents=True)
