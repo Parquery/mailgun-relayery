@@ -75,10 +75,26 @@ Sending requests
   
     ```bash
     curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X PUT \
-      --data '{"descriptor":"some-channel","token":"oqiwdJKNsdKIUwezd92DNQsndkDERDFKJNQWSwq3rODIU",
-              "sender":{"email":"your-name@company.com","name":"Sender"},
-              "recipients":[{"email":"your-client@client.com","name":"Recipient"}],
-              "cc": [],"bcc": [],"min_period":0.0001,"max_size":10000000}' \
+      --data '
+        {
+          "descriptor": "some-channel",
+          "token": "oqiwdJKNsdKIUwezd92DNQsndkDERDFKJNQWSwq3rODIU",
+          "sender": {
+            "email": "your-name@company.com",
+            "name": "Sender"
+          },
+          "recipients":[
+            {
+              "email": "your-client@client.com",
+              "name":"Recipient"
+            }
+          ],
+          "cc": [],
+          "bcc": [],
+          "min_period": 1.2,
+          "max_size":10000
+          "domain": "company.com"
+        }' \
       "localhost:8300/api/channel"
     ```
      
