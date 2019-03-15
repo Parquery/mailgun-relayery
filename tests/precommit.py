@@ -42,6 +42,7 @@ def check(path: pathlib.Path, py_dir: pathlib.Path, overwrite: bool) -> Union[No
         ['mypy', str(path), '--ignore-missing-imports'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        cwd=py_dir.as_posix(),
         env=env,
         universal_newlines=True)
     stdout, stderr = proc.communicate()
@@ -53,6 +54,8 @@ def check(path: pathlib.Path, py_dir: pathlib.Path, overwrite: bool) -> Union[No
         ['pylint', str(path), '--rcfile={}'.format(py_dir / 'pylint.rc')],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        cwd=py_dir.as_posix(),
+        env=env,
         universal_newlines=True)
 
     stdout, stderr = proc.communicate()
@@ -82,14 +85,20 @@ def main() -> int:
     parser.add_argument(
         "--overwrite",
         help="Overwrites the unformatted source files with the well-formatted code in place. "
-        "If not set, an exception is raised if any of the files do not conform to the style guide.",
+             "If not set, an exception is raised if any of the files do not conform to the style guide.",
         action='store_true')
+    parser.add_argument(
+        "--max_workers",
+        help="number of worker threads to run the tests on; "
+             "if not specified, use the maximum number of threads available to ThreadPoolExecutor",
+        type=int)
 
     args = parser.parse_args()
 
     overwrite = bool(args.overwrite)
+    max_workers = None if args.max_workers is None else int(args.max_workers)
 
-    repo_dir = pathlib.Path(__file__).parent.parent
+    repo_dir = pathlib.Path(os.path.realpath(__file__)).parent.parent
 
     # yapf: disable
     pths = sorted(
@@ -100,7 +109,7 @@ def main() -> int:
     success = True
 
     futures_paths = []  # type: List[Tuple[concurrent.futures.Future, pathlib.Path]]
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         for pth in pths:
             if pth.stem == "precommit":
                 continue
