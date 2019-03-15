@@ -6,7 +6,7 @@ Mailgun Relayery
 [![Go Report Card](https://goreportcard.com/badge/github.com/Parquery/mailgun-relayery)](https://goreportcard.com/report/github.com/Parquery/mailgun-relayery)
 [![godoc](https://img.shields.io/badge/godoc-reference-5272B4.svg)](https://godoc.org/github.com/Parquery/mailgun-relayery)
 
-Mailgun Relayery is a tool for relaying with different API keys through the single-key MailGun API.
+Mailgun Relayery is a tool for relaying messages with different API keys through the single-key MailGun API.
 
 **The problem**: MailGun gives out a single API key to each account. For entities dealing with multiple clients or 
 applications, giving out their API key to each of them constitutes a security violation.
