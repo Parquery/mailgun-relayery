@@ -1,3 +1,7 @@
+2.0.0
+=====
+* Simplified the relay server to accept the message in the body of the request
+
 1.0.2
 =====
 * Clarified how to deal with dependencies in CONTRIBUTING

@@ -1,4 +1,4 @@
 package version
 
 // Latest contains the latest version of the package.
-const Latest = "1.0.2"
+const Latest = "2.0.0"
