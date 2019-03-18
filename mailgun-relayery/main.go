@@ -136,7 +136,7 @@ func main() {
 			ReadHeaderTimeout: 60 * time.Second}
 
 		go func() {
-			h := &relay.HandlerImpl{
+			h := &relay.Handler{
 				Env:         env,
 				MailgunData: mailgunData,
 				LogOut:      logOut,

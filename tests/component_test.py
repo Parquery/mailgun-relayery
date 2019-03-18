@@ -292,7 +292,7 @@ def run_test_relay(release_dir: pathlib.Path, operation_dir: pathlib.Path, quiet
         # relay a message to the mock MailGun server
         message = tests.relay.Message(subject="a message from your friend", content="dear friend, I hope all is good.")
         resp = client_rel.put_message(x_descriptor=desc, x_token=token, message=message)
-        expected = b'The message was correctly relayed.'
+        expected = b'The message has been correctly relayed.'
         assert resp == expected, "expected {}, got {}".format(expected, resp)
         assert len(CORRECT_REQUESTS) == 1
         assert len(WRONG_REQUESTS) == 0
@@ -486,7 +486,7 @@ def run_test_relay_errors(release_dir: pathlib.Path, operation_dir: pathlib.Path
             message = tests.relay.Message(
                 subject="a message from your friend", content="dear friend, I hope all is good.")
             resp = client_rel.put_message(x_descriptor=desc_large_min_period, x_token=token, message=message)
-            expected = b'The message was correctly relayed.'
+            expected = b'The message has been correctly relayed.'
             assert resp == expected, "expected {}, got {}".format(expected, resp)
             assert len(CORRECT_REQUESTS) == 2
             assert len(WRONG_REQUESTS) == 0

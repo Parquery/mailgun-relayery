@@ -585,7 +585,7 @@ func TestTxn_PutTimestamp(t *testing.T) {
 }
 
 func TestTxn_RemoveChannel(t *testing.T) {
-	d, err := emptyDatabase(ControlAccess) //TODO test with put timestamp as well
+	d, err := emptyDatabase(ControlAccess)
 	if err != nil {
 		t.Fatal(err.Error())
 	}

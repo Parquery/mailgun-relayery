@@ -74,27 +74,28 @@ Sending requests
   to create a mailing channel and authorization token:
   
     ```bash
-    curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X PUT \
-      --data '
-        {
-          "descriptor": "some-channel",
-          "token": "oqiwdJKNsdKIUwezd92DNQsndkDERDFKJNQWSwq3rODIU",
-          "sender": {
-            "email": "your-name@company.com",
-            "name": "Sender"
-          },
-          "recipients":[
-            {
-              "email": "your-client@client.com",
-              "name":"Recipient"
-            }
-          ],
-          "cc": [],
-          "bcc": [],
-          "min_period": 1.2,
-          "max_size":10000
-          "domain": "company.com"
-        }' \
+    curl -i \
+        -X PUT \
+        -H "Accept: application/json" \
+        -H "Content-Type: application/json" \
+        --data '{
+            "descriptor": "some-channel",
+            "token": "oqiwdJKNsdK",
+            "sender": {
+              "email": "your-name@company.com",
+              "name":"Some Sender"
+            },
+            "recipients":[
+              {
+                "email": "your-client@client.com",
+                "name": "Recipient"
+              }
+            ],
+            "cc": [],
+            "bcc": [],
+            "min_period":0.1,
+            "max_size":10000000
+          }' \
       "localhost:8300/api/channel"
     ```
      
@@ -102,9 +103,17 @@ Sending requests
   to relay a message:
   
     ```bash
-    curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST \
-      --data '{"message":"hello there", "subject": "a message from your friend"}' \
-      "localhost:8200/api/message?descriptor=some-channel&token=oqiwdJKNsdKIUwezd92DNQsndkDERDFKJNQWSwq3rODIU"
+    curl -i \
+        -X POST \
+        -H "Accept: application/json" \
+        -H "Content-Type: application/json" \
+        -H "X-Descriptor: some-channel" \
+        -H "X-Token: oqiwdJKNsdK" \
+        --data '{
+          "message": "hello there",
+          "subject": "a message from your friend"
+        }' \
+        "localhost:8200/api/message
     ```
      
 Development

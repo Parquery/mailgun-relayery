@@ -6,7 +6,7 @@ info:
 
     The clients need to authenticate by basic auth specifying the channel descriptor as the
     user name and the assigned API token as the password.
-  version: "1.0.0"
+  version: "2.0.0"
 schemes:
   - https
 basePath: /
@@ -33,7 +33,7 @@ paths:
           type: string
           required: true
         - name: message
-          in: formData
+          in: body
           schema:
             $ref: "#/definitions/Message"
           required: true

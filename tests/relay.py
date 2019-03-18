@@ -232,11 +232,9 @@ class RemoteCaller:
 
         headers['X-Token'] = x_token
 
-        data = {}  # type: Dict[str, str]
+        data = to_jsonable(message, expected=[Message])
 
-        data['message'] = json.dumps(to_jsonable(message, expected=[Message]))
-
-        resp = requests.request(method='post', url=url, headers=headers, data=data, auth=self.auth)
+        resp = requests.request(method='post', url=url, headers=headers, json=data, auth=self.auth)
 
         with contextlib.closing(resp):
             resp.raise_for_status()
