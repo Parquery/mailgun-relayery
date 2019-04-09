@@ -79,6 +79,7 @@ Sending requests
         -H "Accept: application/json" \
         -H "Content-Type: application/json" \
         --data '{
+            "domain": "marketing.domainname.com",
             "descriptor": "some-channel",
             "token": "oqiwdJKNsdK",
             "sender": {
